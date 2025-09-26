@@ -1,6 +1,5 @@
 (function(){
-  // UPRAVTE selektory podle Shoptetu:
-  var BUY_BTN_SEL = ".product-detail form button[type='submit'], .buy-form button[type='submit']";
+  var BUY_BTN_SEL = "button.add-to-cart-button"; // opravený selektor
   var TITLE_SEL   = ".product-detail h1, .p-detail__name, h1";
   var buyBtn, bar, titleEl;
 
