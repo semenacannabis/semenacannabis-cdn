@@ -9,5 +9,5 @@
 .sticky-atc__btn{margin-left:auto;background:#fff;color:#111;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
 /* zobraz i na desktopu */
 @media (min-width:1024px){.sticky-atc{display:flex}}
-/* nad SALE bar na mobilu */
+/* drž se nad SALE barem na mobilech */
 @media (max-width:768px){ .sticky-atc{ bottom:64px; } }
