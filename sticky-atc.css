@@ -7,9 +7,7 @@
 .sticky-atc--show{bottom:0}
 .sticky-atc__title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}
 .sticky-atc__btn{margin-left:auto;background:#fff;color:#111;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
-
-/* ⚠️ zobraz i na desktopu */
+/* zobraz i na desktopu */
 @media (min-width:1024px){.sticky-atc{display:flex}}
-
-/* vyhnout se SALE baru na mobilu */
+/* nad SALE bar na mobilu */
 @media (max-width:768px){ .sticky-atc{ bottom:64px; } }
