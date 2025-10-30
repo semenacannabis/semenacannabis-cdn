@@ -1,0 +1,40 @@
+/* === CTA BOXES – SEMENACANNABIS GLOBAL === */
+.cta-box {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-size: 12pt;
+  line-height: 1.6;
+}
+
+/* 💰 CTA – výprodej / akce */
+.cta-save {
+  border-left: 4px solid #2a7d46;
+  background: #f7fdf9;
+}
+
+/* 💎 CTA TOP 1 – doporučený produkt */
+.cta-top1 {
+  border-left: 4px solid #f1c232;
+  background: #fff8e1;
+}
+
+/* 🌱 CTA GREEN – info / tipy */
+.cta-green {
+  border-left: 4px solid #339966;
+  background: #f7fdf9;
+}
+
+/* 🎁 CTA GREEN BENEFIT – dárky, komunita */
+.cta-green-benefit {
+  border-left: 4px solid #2a7d46;
+  background: #f8fdf9;
+}
+
+/* ⚠️ CTA RED – právní upozornění */
+.cta-red {
+  border-left: 4px solid #e53935;
+  background: #fdecea;
+  font-size: 0.95rem;
+  color: #444;
+}
