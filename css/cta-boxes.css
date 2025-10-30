@@ -38,3 +38,33 @@
   font-size: 0.95rem;
   color: #444;
 }
+/* === CTA NAVIGATION GRID === */
+.cta-links {
+  margin-top: 16px;
+  padding: 0;
+}
+.cta-links .cta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cta-links .cta-btn {
+  flex: 1;
+  min-width: 160px;
+  text-align: center;
+  padding: 10px 14px;
+  font-size: 12pt;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all .3s ease;
+  color: #fff;
+  background: #2a7d46;
+}
+.cta-links .cta-btn:hover {
+  background: #256d3c;
+}
+.cta-links .cta-btn.red {
+  background: #e53935;
+}
+.cta-links .
