@@ -1,76 +1,70 @@
-/* === ZÁKLADNÍ KONTEJNER FILTRŮ === */
-body { outline: 6px solid red !important; }
+/* ============================= */
+/* SHOPTET – FILTER BAR (DROPDOWN) */
+/* ============================= */
 
-.filter,
-.filters {
+/* celý blok filtrů */
+.products-filter {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 16px 18px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    margin-bottom: 30px;
 }
 
-/* === NADPIS PARAMETRU === */
-.filter h4,
-.filters h4 {
-    font-size: 14px;
+/* jednotlivé filter boxy (Příznaky, Cena, THC...) */
+.products-filter .filter-box {
+    border-radius: 10px;
+    border: 2px solid #e5efe8;
+    background: #f6fbf7;
+    transition: all .2s ease;
+}
+
+/* hover */
+.products-filter .filter-box:hover {
+    border-color: #2f7d32;
+    background: #ecf7ef;
+}
+
+/* text v tlačítku filtru */
+.products-filter .filter-box > a,
+.products-filter .filter-box > button {
     font-weight: 600;
-    text-transform: none;
-    margin-bottom: 8px;
     color: #1f1f1f;
+    padding: 10px 14px;
 }
 
-/* === SKRYTÍ DEFAULT CHECKBOXŮ === */
-.filter input[type="checkbox"] {
-    display: none;
-}
-
-/* === POLOŽKY FILTRU JAKO TAGY === */
-.filter label {
-    display: inline-block;
-    margin: 4px 6px 4px 0;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: #f2f4f3;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #333;
-}
-
-/* === HOVER === */
-.filter label:hover {
-    background: #e0e5e3;
-}
-
-/* === AKTIVNÍ FILTR === */
-.filter input[type="checkbox"]:checked + label {
+/* aktivní filtr */
+.products-filter .filter-box.active {
+    border-color: #2f7d32;
     background: #2f7d32;
+}
+
+.products-filter .filter-box.active > a,
+.products-filter .filter-box.active > button {
     color: #ffffff;
-    font-weight: 500;
 }
 
-/* === POSUVNÍKY (CENA, THC, CBD) === */
-.ui-slider {
-    margin-top: 10px;
+/* dropdown obsah */
+.products-filter .filter-dropdown {
+    border-radius: 12px;
+    border: 1px solid #dfe8e2;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
 }
 
-.ui-slider-range {
-    background: #2f7d32 !important;
+/* checkboxy v dropdownu */
+.products-filter .filter-dropdown label {
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background .15s ease;
 }
 
-.ui-slider-handle {
-    border: 2px solid #2f7d32 !important;
-    background: #ffffff !important;
+/* hover v dropdownu */
+.products-filter .filter-dropdown label:hover {
+    background: #e9f4ec;
 }
 
-/* === MÉNĚ DŮLEŽITÉ / POKROČILÉ FILTRY – ZTIŠENÍ === */
-.filter[data-parameter="cbg"],
-.filter[data-parameter="cbd-thc"],
-.filter[data-parameter="flowering-time"] {
-    opacity: 0.7;
-}
-
-/* === VÍCE VZDUCHU MEZI SEKCE === */
-.filter + .filter {
-    margin-top: 14px;
+/* aktivní položka */
+.products-filter .filter-dropdown input:checked + label {
+    background: #2f7d32;
+    color: #fff;
 }
