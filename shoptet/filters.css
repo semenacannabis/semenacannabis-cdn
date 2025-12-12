@@ -1,4 +1,6 @@
 /* === ZÁKLADNÍ KONTEJNER FILTRŮ === */
+body { outline: 6px solid red !important; }
+
 .filter,
 .filters {
     background: #ffffff;
