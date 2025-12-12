@@ -1,70 +1,39 @@
 /* ===================================== */
-/* SHOPTET – DROPDOWN FILTR BAR (UI)      */
+/* SHOPTET – FORCE STYLE FILTER BUTTONS  */
 /* ===================================== */
 
-/* celý blok filtrů */
-.products-top-filters,
-.products-filter {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 16px 18px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
-    margin-bottom: 30px;
+/* celý horní blok s filtry */
+[class*="filter"] {
+    border-radius: 14px !important;
 }
 
-/* jednotlivé filtry (tlačítka) */
-.products-top-filters button,
-.products-filter button {
-    border-radius: 10px !important;
-    border: 2px solid #e5efe8 !important;
+/* všechna tlačítka ve filtrech */
+[class*="filter"] button {
     background: #f6fbf7 !important;
-    font-weight: 600;
-    padding: 10px 14px;
-    transition: all .2s ease;
+    border: 3px solid #2f7d32 !important;
+    color: #1f1f1f !important;
+    font-weight: 700 !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
 }
 
 /* hover */
-.products-top-filters button:hover,
-.products-filter button:hover {
-    border-color: #2f7d32 !important;
-    background: #ecf7ef !important;
+[class*="filter"] button:hover {
+    background: #2f7d32 !important;
+    color: #ffffff !important;
 }
 
-/* aktivní filtr */
-.products-top-filters .active button,
-.products-filter .active button {
+/* otevřený / aktivní filtr */
+[class*="filter"] button[aria-expanded="true"],
+[class*="filter"] .active button {
     background: #2f7d32 !important;
-    border-color: #2f7d32 !important;
     color: #ffffff !important;
 }
 
 /* dropdown obsah */
-.products-top-filters .dropdown-menu,
-.products-filter .dropdown-menu {
-    border-radius: 12px;
-    border: 1px solid #dfe8e2;
-    box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    padding: 10px;
-}
-
-/* položky v dropdownu */
-.products-top-filters label,
-.products-filter label {
-    display: block;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* hover položky */
-.products-top-filters label:hover,
-.products-filter label:hover {
-    background: #e9f4ec;
-}
-
-/* zaškrtnutá položka */
-.products-top-filters input:checked + label,
-.products-filter input:checked + label {
-    background: #2f7d32;
-    color: #ffffff;
+[class*="filter"] [role="menu"],
+[class*="filter"] .dropdown-menu {
+    border-radius: 14px !important;
+    border: 2px solid #2f7d32 !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,.15) !important;
 }
