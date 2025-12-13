@@ -101,3 +101,39 @@
   cursor: pointer;
 }
 
+/* podrobné filtry – NEPOUŽÍVAT display:none */
+.filter-section {
+  transition: opacity .2s ease;
+}
+
+/* schované */
+#filters:not(.sc-show-secondary) .filter-section {
+  opacity: 1;
+}
+
+/* co má být schované – jen vizuálně */
+#filters:not(.sc-show-secondary) .filter-section:not(.filter-section-price):not(.filter-section-thc):not(.filter-section-cbd):not(.filter-section-height):not(.filter-section-yield):not(.filter-section-flowering) {
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+/* po rozbalení */
+.sc-show-secondary .filter-section {
+  visibility: visible;
+  height: auto;
+  overflow: visible;
+}
+
+/* aktivní filtr – VIDITELNÝ STAV */
+.filter-section.active h4,
+.filter-section.selected h4 {
+  background: #4caf50;
+  color: #fff;
+  border-radius: 999px;
+}
+
+.filter-section.active h4::after {
+  content: " ✓";
+}
