@@ -1,11 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
+(function waitForFilters() {
   const filters = document.getElementById("filters");
-  if (!filters) return;
+  if (!filters) {
+    setTimeout(waitForFilters, 200);
+    return;
+  }
 
-  const sections = Array.from(filters.querySelectorAll(".filter-section"));
-  if (!sections.length) return;
+  const sections = filters.querySelectorAll(".filter-section");
+  if (!sections.length) {
+    setTimeout(waitForFilters, 200);
+    return;
+  }
 
-  // KLÍČOVÉ FILTRY – ty zůstanou vždy viditelné
+  // ===== OD TUD UŽ FILTRY EXISTUJÍ =====
+
   const primaryKeywords = [
     "Cena",
     "Indika",
@@ -18,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "Výška"
   ];
 
-  // Vytvoření wrapperů
   const primaryWrap = document.createElement("div");
   primaryWrap.className = "sc-filters-primary";
 
@@ -35,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Tlačítko
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "sc-filters-toggle";
   toggleBtn.type = "button";
@@ -44,11 +49,14 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleBtn.addEventListener("click", () => {
     const open = secondaryWrap.style.display === "none";
     secondaryWrap.style.display = open ? "block" : "none";
-    toggleBtn.innerText = open ? "➖ Skrýt podrobné filtry" : "➕ Podrobné filtry";
+    toggleBtn.innerText = open
+      ? "➖ Skrýt podrobné filtry"
+      : "➕ Podrobné filtry";
   });
 
-  // Vložení do DOM
-  filters.prepend(toggleBtn);
+  filters.innerHTML = "";
+  filters.appendChild(toggleBtn);
   filters.appendChild(primaryWrap);
   filters.appendChild(secondaryWrap);
-});
+
+})();
