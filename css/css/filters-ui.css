@@ -62,3 +62,25 @@
 .sc-toggle:hover{
   background:#dff0e5;
 }
+/* === PODROBNÉ FILTRY – SKRÝT === */
+#filters .filter-section {
+  display: none;
+}
+
+/* === RYCHLÝ VÝBĚR (první řádek filtrů) === */
+#filters .filter-section:nth-child(-n+6) {
+  display: inline-block;
+}
+
+/* === TOGGLE TLAČÍTKO === */
+.sc-filters-toggle {
+  display: inline-block;
+  margin: 12px 0;
+  padding: 8px 18px;
+  background: #e8f3ec;
+  border-radius: 999px;
+  color: #2e7d32;
+  font-weight: 700;
+  cursor: pointer;
+}
+
