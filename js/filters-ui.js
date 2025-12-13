@@ -24,14 +24,15 @@ const primaryFilterIds = [
   const secondaryWrap = document.createElement("div");
   secondaryWrap.className = "sc-secondary";
 
-  sections.forEach(sec => {
-    const text = sec.innerText || "";
-    if (primaryKeywords.some(k => text.includes(k))) {
-      primaryWrap.appendChild(sec);
-    } else {
-      secondaryWrap.appendChild(sec);
-    }
-  });
+ sections.forEach(sec => {
+  const param = sec.getAttribute("data-filter-id") || "";
+  if (primaryFilterIds.some(id => param.includes(id))) {
+    primaryWrap.appendChild(sec);
+  } else {
+    secondaryWrap.appendChild(sec);
+  }
+});
+
 
   const title = document.createElement("div");
   title.className = "sc-filter-title";
