@@ -5,17 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const sections = Array.from(filtersContainer.querySelectorAll(".filter-section"));
 
-  const primaryKeywords = [
-    "Cena",
-    "Indika",
-    "Sativa",
-    "Hybrid",
-    "THC",
-    "CBD",
-    "Doba",
-    "Výnos",
-    "Výška"
-  ];
+const primaryFilterIds = [
+  "price",        // Cena
+  "sativa",       // Sativa
+  "indica",       // Indika
+  "hybrid",       // Hybrid
+  "thc",          // THC
+  "cbd",          // CBD
+  "flowering",    // Doba květu
+  "yield",        // Výnos
+  "height"        // Výška
+];
+
 
   const primaryWrap = document.createElement("div");
   primaryWrap.className = "sc-primary";
