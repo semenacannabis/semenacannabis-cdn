@@ -83,4 +83,21 @@
   font-weight: 700;
   cursor: pointer;
 }
+.sc-secondary-filter {
+  display: none !important;
+}
+
+.sc-show-secondary .sc-secondary-filter {
+  display: inline-block !important;
+}
+
+.sc-filters-toggle {
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #e6ffe6;
+  border: 2px solid #4caf50;
+  font-weight: 700;
+  cursor: pointer;
+}
 
