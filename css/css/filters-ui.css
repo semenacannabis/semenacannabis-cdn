@@ -1,0 +1,64 @@
+/* ================================
+   FILTERS UI – SemenaCannabis.cz
+   ================================ */
+
+#filters{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  margin-top:12px;
+}
+
+.sc-filter-title{
+  font-weight:700;
+  font-size:17px;
+  color:#2e7d32;
+  margin:6px 0 14px;
+}
+
+.sc-primary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.sc-primary .filter-section{
+  background:#f4fff4;
+  border:2px solid #4CAF50;
+  border-radius:999px;
+  transition:all .2s ease;
+}
+
+.sc-primary .filter-section:hover{
+  background:#e6ffe6;
+  border-color:#2e7d32;
+}
+
+.sc-primary h4{
+  font-weight:700;
+  color:#1a1a1a;
+}
+
+.sc-secondary{
+  display:none;
+  margin-top:12px;
+}
+
+.sc-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+  padding:8px 16px;
+  border-radius:999px;
+  background:#e8f3ec;
+  color:#2e7d32;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.sc-toggle:hover{
+  background:#dff0e5;
+}
