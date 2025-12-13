@@ -1,17 +1,9 @@
 (function waitForFilters() {
   const filters = document.getElementById("filters");
-  if (!filters) {
-    setTimeout(waitForFilters, 200);
-    return;
-  }
+  if (!filters) return setTimeout(waitForFilters, 200);
 
   const sections = filters.querySelectorAll(".filter-section");
-  if (!sections.length) {
-    setTimeout(waitForFilters, 200);
-    return;
-  }
-
-  // ===== OD TUD UŽ FILTRY EXISTUJÍ =====
+  if (!sections.length) return setTimeout(waitForFilters, 200);
 
   const primaryKeywords = [
     "Cena",
@@ -25,38 +17,27 @@
     "Výška"
   ];
 
-  const primaryWrap = document.createElement("div");
-  primaryWrap.className = "sc-filters-primary";
-
-  const secondaryWrap = document.createElement("div");
-  secondaryWrap.className = "sc-filters-secondary";
-  secondaryWrap.style.display = "none";
-
   sections.forEach(sec => {
     const title = sec.innerText || "";
-    if (primaryKeywords.some(k => title.includes(k))) {
-      primaryWrap.appendChild(sec);
-    } else {
-      secondaryWrap.appendChild(sec);
+
+    if (!primaryKeywords.some(k => title.includes(k))) {
+      sec.classList.add("sc-secondary-filter");
     }
   });
 
+  // Tlačítko – pouze přepíná VIDITELNOST
   const toggleBtn = document.createElement("button");
-  toggleBtn.className = "sc-filters-toggle";
   toggleBtn.type = "button";
+  toggleBtn.className = "sc-filters-toggle";
   toggleBtn.innerText = "➕ Podrobné filtry";
 
-  toggleBtn.addEventListener("click", () => {
-    const open = secondaryWrap.style.display === "none";
-    secondaryWrap.style.display = open ? "block" : "none";
-    toggleBtn.innerText = open
+  toggleBtn.addEventListener("click", e => {
+    e.preventDefault();
+    const hidden = filters.classList.toggle("sc-show-secondary");
+    toggleBtn.innerText = hidden
       ? "➖ Skrýt podrobné filtry"
       : "➕ Podrobné filtry";
   });
 
-  filters.innerHTML = "";
-  filters.appendChild(toggleBtn);
-  filters.appendChild(primaryWrap);
-  filters.appendChild(secondaryWrap);
-
+  filters.prepend(toggleBtn);
 })();
