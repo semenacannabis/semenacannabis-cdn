@@ -5,39 +5,25 @@
   const sections = filters.querySelectorAll(".filter-section");
   if (!sections.length) return setTimeout(waitForFilters, 200);
 
-  const primaryKeywords = [
-    "Cena",
-    "Indika",
-    "Sativa",
-    "Hybrid",
-    "THC",
-    "CBD",
-    "Doba",
-    "Výnos",
-    "Výška"
-  ];
+  // tlačítko
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "sc-filters-toggle";
+  btn.innerText = "➕ Podrobné filtry";
 
-  sections.forEach(sec => {
-    const title = sec.innerText || "";
-
-    if (!primaryKeywords.some(k => title.includes(k))) {
-      sec.classList.add("sc-secondary-filter");
-    }
-  });
-
-  // Tlačítko – pouze přepíná VIDITELNOST
-  const toggleBtn = document.createElement("button");
-  toggleBtn.type = "button";
-  toggleBtn.className = "sc-filters-toggle";
-  toggleBtn.innerText = "➕ Podrobné filtry";
-
-  toggleBtn.addEventListener("click", e => {
+  btn.addEventListener("click", e => {
     e.preventDefault();
-    const hidden = filters.classList.toggle("sc-show-secondary");
-    toggleBtn.innerText = hidden
+    filters.classList.toggle("sc-show-secondary");
+    btn.innerText = filters.classList.contains("sc-show-secondary")
       ? "➖ Skrýt podrobné filtry"
       : "➕ Podrobné filtry";
   });
 
-  filters.prepend(toggleBtn);
+  filters.prepend(btn);
+
+  // ZABRÁNĚNÍ SKOKU NAHORU
+  filters.addEventListener("click", e => {
+    const a = e.target.closest("a[href='#']");
+    if (a) e.preventDefault();
+  });
 })();
