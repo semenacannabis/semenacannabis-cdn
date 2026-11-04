@@ -66,7 +66,7 @@
     up();
   }
 
-  /* recenze HP: jen 3 posledni, bez pruhu 4,9 */
+  /* recenze HP: 4 posledni, bez pruhu 4,9 */
   function hpRating() {
     if (!/in-index|id-1/.test(document.body.className)) return;
     function e(s) {
@@ -87,7 +87,7 @@
         var a = [];
         var st = "★★★★★";
         d.querySelectorAll(".vote-wrap").forEach(function (v) {
-          if (a.length >= 3 || v.closest(".admin-response")) return;
+          if (a.length >= 4 || v.closest(".admin-response")) return;
           var n = ((v.querySelector(".vote-name") || {}).innerText || "").trim();
           var t = ((v.querySelector(".vote-time") || {}).innerText || "").trim();
           var x = ((v.querySelector(".vote-content") || {}).innerText || "").trim();
