@@ -1,0 +1,327 @@
+/* tmavy rezim */
+html {
+  color-scheme: only light;
+}
+
+/* kachle kategorii */
+ul.subcategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+ul.subcategories li {
+  display: flex;
+  flex: 1 1 calc(25% - 15px);
+}
+
+ul.subcategories li a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 10px;
+  background: #f4fff4;
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  word-break: break-word;
+  transition: all 0.3s ease-in-out;
+}
+
+ul.subcategories li a:hover {
+  background: #e6ffe6;
+  border-color: #2e7d32;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  ul.subcategories li {
+    flex: 1 1 calc(50% - 15px);
+  }
+}
+
+@media (max-width: 600px) {
+  ul.subcategories li {
+    flex: 1 1 100%;
+  }
+}
+
+/* Instagram mobil */
+.instagram-section,
+.instagram-feed,
+.instagram-grid {
+  min-height: 1px;
+}
+
+.instagram-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .instagram-section,
+  .instagram-feed,
+  .instagram-grid {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .instagram-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .instagram-grid img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+}
+
+/* menu nad hledanim */
+.top-navigation-bar-menu-helper {
+  z-index: 500 !important;
+  background: #fff !important;
+  min-width: 250px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+  border: 1px solid #e3e3e3;
+}
+
+.top-navigation-bar-menu-helper li a {
+  white-space: nowrap;
+}
+
+/* zelena lista */
+@media (min-width: 768px) {
+  .navigation-in,
+  .desktop #navigation .menu-level-1 > li > a,
+  .menu-item-924 > a {
+    background: #2a7d46 !important;
+    background-color: #2a7d46 !important;
+    color: #fff !important;
+  }
+}
+
+/* mobil sirka + sipka */
+@media (max-width: 767px) {
+  .overall-wrapper,
+  .container,
+  .content-wrapper,
+  .content-wrapper-in,
+  #content,
+  .category-top,
+  .category-perex {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  ul.subcategories {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  ul.subcategories li {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  .goToTop {
+    position: fixed !important;
+    left: 12px !important;
+    right: auto !important;
+    bottom: 72px !important;
+    width: auto !important;
+    z-index: 1000000 !important;
+  }
+}
+
+/* datum recenze na produktu */
+.hodnoceni .vote-rating,
+.vote-rating {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.hodnoceni .vote-header,
+.hodnoceni .vote-summary {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+.hodnoceni .vote-time {
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+  margin-top: 6px !important;
+  color: #666 !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+
+/* vyprodej pruh */
+.sale-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: auto;
+  max-width: 100%;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(90deg, #ff4d4d, #ff1a1a);
+  box-shadow: 0 -2px 5px #0003;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sale-bar[hidden],
+body.ordering-process .sale-bar {
+  display: none !important;
+}
+
+.sale-bar-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sale-bar-btn {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  background: #fff;
+  border-radius: 6px;
+  color: #d40000 !important;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.sale-bar-btn:hover {
+  background: #f2f2f2;
+  color: #a00000 !important;
+}
+
+.sale-bar-close {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: 0;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .sale-bar {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 8px 42px calc(8px + env(safe-area-inset-bottom)) 10px;
+    font-size: 13px;
+    overflow: hidden;
+  }
+
+  .sale-bar-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .sale-bar-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .sale-bar-close {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+  }
+}
+
+/* bannery 2x2 */
+@media (max-width: 767px) {
+  .benefitBanner.position--benefitHomepage {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    padding: 4px 8px !important;
+  }
+
+  .benefitBanner.position--benefitHomepage .benefitBanner__item,
+  .benefitBanner.position--benefitHomepage .benefitBanner__img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* recenze HP */
+.r {
+  max-width: 1100px;
+  margin: 8px auto 18px;
+  padding: 0 12px;
+}
+
+.r-h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #f4fbf5;
+  border: 1px solid #d7eadb;
+  border-radius: 14px;
+}
+
+.r-s {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.r-n {
+  font-size: 34px;
+  font-weight: 800;
+  color: #2a7d46;
+}
+
+.r-m {
+  color: #333;
+  font-size: 15px;
+}
+
+.r-st {
+  color: #e2b100;
+  font-size: 18px;
+}
+
+.r-a {
+  background: #2a7d46;
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
