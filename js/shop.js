@@ -66,7 +66,7 @@
     up();
   }
 
-  /* recenze HP: 4,9 pevne, pocet + 3 posledni recenze z /hodnoceni-obchodu/ */
+  /* recenze HP: jen 3 posledni, bez pruhu 4,9 */
   function hpRating() {
     if (!/in-index|id-1/.test(document.body.className)) return;
     function e(s) {
@@ -84,8 +84,6 @@
       })
       .then(function (html) {
         var d = new DOMParser().parseFromString(html, "text/html");
-        var s = (d.querySelector(".rate-star-wrap") || {}).innerText || "";
-        var c = (s.match(/([0-9]+)\s+hodnocen/) || [])[1] || "";
         var a = [];
         var st = "★★★★★";
         d.querySelectorAll(".vote-wrap").forEach(function (v) {
@@ -103,33 +101,27 @@
           }
           a.push({ n: mask(n), t: t, x: x });
         });
+        if (!a.length) return;
         var b = document.createElement("div");
         b.className = "r";
         b.innerHTML =
-          '<div class="r-h"><div class="r-s"><div class="r-n">4,9</div><div class="r-m"><div class="r-st">' +
-          st +
-          "</div>Hodnocení obchodu<br>" +
-          (c ? e(c) + " hodnocení" : "Hodnocení zákazníků") +
-          '</div></div><a class="r-a" href="/hodnoceni-obchodu/">Všechna hodnocení</a></div>' +
-          (a.length
-            ? '<div class="r-l">' +
-              a
-                .map(function (i) {
-                  return (
-                    '<article class="r-c"><div class="r-nm">' +
-                    e(i.n) +
-                    '</div><div class="r-t">' +
-                    st +
-                    " · " +
-                    e(i.t) +
-                    '</div><p class="r-x">' +
-                    e(i.x) +
-                    "</p></article>"
-                  );
-                })
-                .join("") +
-              "</div>"
-            : "");
+          '<div class="r-l">' +
+          a
+            .map(function (i) {
+              return (
+                '<a class="r-c" href="/hodnoceni-obchodu/"><div class="r-nm">' +
+                e(i.n) +
+                '</div><div class="r-t">' +
+                st +
+                " · " +
+                e(i.t) +
+                '</div><p class="r-x">' +
+                e(i.x) +
+                "</p></a>"
+              );
+            })
+            .join("") +
+          "</div>";
         var after = document.querySelector(".benefitBanner.position--benefitHomepage");
         if (after && after.parentNode) after.parentNode.insertBefore(b, after.nextSibling);
       });
