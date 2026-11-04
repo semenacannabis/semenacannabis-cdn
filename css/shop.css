@@ -276,68 +276,31 @@ body.ordering-process .sale-bar {
   }
 }
 
-/* recenze HP */
+/* recenze HP: jen 3 karty */
 .r {
   max-width: 1100px;
   margin: 8px auto 18px;
   padding: 0 12px;
 }
 
-.r-h {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  background: #f4fbf5;
-  border: 1px solid #d7eadb;
-  border-radius: 14px;
-}
-
-.r-s {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.r-n {
-  font-size: 34px;
-  font-weight: 800;
-  color: #2a7d46;
-}
-
-.r-m {
-  color: #333;
-  font-size: 15px;
-}
-
-.r-st {
-  color: #e2b100;
-  font-size: 18px;
-}
-
-.r-a {
-  background: #2a7d46;
-  color: #fff !important;
-  font-weight: 700;
-  text-decoration: none !important;
-  padding: 10px 16px;
-  border-radius: 8px;
-}
-
 .r-l {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 12px;
 }
 
 .r-c {
+  display: block;
   background: #fff;
   border: 1px solid #d7eadb;
   border-radius: 14px;
   padding: 14px;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.r-c:hover {
+  border-color: #2a7d46;
 }
 
 .r-nm {
