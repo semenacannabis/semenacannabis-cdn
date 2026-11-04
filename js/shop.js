@@ -66,9 +66,18 @@
     up();
   }
 
-  /* recenze HP: prumer 4,9 pevne, pocet z /hodnoceni-obchodu/ */
+  /* recenze HP: 4,9 pevne, pocet + 3 posledni recenze z /hodnoceni-obchodu/ */
   function hpRating() {
     if (!/in-index|id-1/.test(document.body.className)) return;
+    function e(s) {
+      return String(s || "").replace(/[&<>"]/g, function (ch) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch];
+      });
+    }
+    function mask(n) {
+      var p = String(n || "").trim().split(/\s+/);
+      return p.length < 2 ? p[0] || "" : p[0] + " " + p[p.length - 1].charAt(0).toUpperCase() + ".";
+    }
     fetch("/hodnoceni-obchodu/")
       .then(function (r) {
         return r.text();
@@ -77,12 +86,50 @@
         var d = new DOMParser().parseFromString(html, "text/html");
         var s = (d.querySelector(".rate-star-wrap") || {}).innerText || "";
         var c = (s.match(/([0-9]+)\s+hodnocen/) || [])[1] || "";
+        var a = [];
+        var st = "★★★★★";
+        d.querySelectorAll(".vote-wrap").forEach(function (v) {
+          if (a.length >= 3 || v.closest(".admin-response")) return;
+          var n = ((v.querySelector(".vote-name") || {}).innerText || "").trim();
+          var t = ((v.querySelector(".vote-time") || {}).innerText || "").trim();
+          var x = ((v.querySelector(".vote-content") || {}).innerText || "").trim();
+          if (
+            v.querySelectorAll(".vote-rating .star-on").length < 5 ||
+            x.length < 24 ||
+            /podvod|reklamuj|omlouvám/i.test(x) ||
+            /administrátor/i.test(n)
+          ) {
+            return;
+          }
+          a.push({ n: mask(n), t: t, x: x });
+        });
         var b = document.createElement("div");
         b.className = "r";
         b.innerHTML =
-          '<div class="r-h"><div class="r-s"><div class="r-n">4,9</div><div class="r-m"><div class="r-st">★★★★★</div>Hodnocení obchodu<br>' +
-          (c ? c + " hodnocení" : "Hodnocení zákazníků") +
-          '</div></div><a class="r-a" href="/hodnoceni-obchodu/">Všechna hodnocení</a></div>';
+          '<div class="r-h"><div class="r-s"><div class="r-n">4,9</div><div class="r-m"><div class="r-st">' +
+          st +
+          "</div>Hodnocení obchodu<br>" +
+          (c ? e(c) + " hodnocení" : "Hodnocení zákazníků") +
+          '</div></div><a class="r-a" href="/hodnoceni-obchodu/">Všechna hodnocení</a></div>' +
+          (a.length
+            ? '<div class="r-l">' +
+              a
+                .map(function (i) {
+                  return (
+                    '<article class="r-c"><div class="r-nm">' +
+                    e(i.n) +
+                    '</div><div class="r-t">' +
+                    st +
+                    " · " +
+                    e(i.t) +
+                    '</div><p class="r-x">' +
+                    e(i.x) +
+                    "</p></article>"
+                  );
+                })
+                .join("") +
+              "</div>"
+            : "");
         var after = document.querySelector(".benefitBanner.position--benefitHomepage");
         if (after && after.parentNode) after.parentNode.insertBefore(b, after.nextSibling);
       });
