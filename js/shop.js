@@ -127,6 +127,196 @@
       });
   }
 
+  /* THC, Sativa, Indica z doplnkovych parametru na nahled */
+  function geneBadges() {
+    var KEY = "sc-genes-v1";
+    var TTL = 6 * 60 * 60 * 1000;
+    var MAX = 2;
+    var mem = {};
+    var inflight = {};
+    var q = [];
+    var running = 0;
+    var io = null;
+
+    try {
+      mem = JSON.parse(localStorage.getItem(KEY) || "{}");
+    } catch (e) {
+      mem = {};
+    }
+
+    function save() {
+      var keys = Object.keys(mem);
+      if (keys.length > 400) {
+        keys.sort(function (a, b) {
+          return (mem[a].t || 0) - (mem[b].t || 0);
+        });
+        keys.slice(0, keys.length - 400).forEach(function (k) {
+          delete mem[k];
+        });
+      }
+      try {
+        localStorage.setItem(KEY, JSON.stringify(mem));
+      } catch (e2) {}
+    }
+
+    function fresh(id) {
+      var row = mem[id];
+      if (!row || Date.now() - (row.t || 0) > TTL) {
+        if (row) delete mem[id];
+        return null;
+      }
+      return row;
+    }
+
+    function labelText(th) {
+      var lab = th.querySelector(".row-header-label") || th;
+      var clone = lab.cloneNode(true);
+      clone.querySelectorAll(".show-tooltip, .row-header-label-colon").forEach(function (n) {
+        n.remove();
+      });
+      return clone.textContent.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+    }
+
+    function readGenes(html) {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      var out = { thc: "", sativa: "", indica: "", t: Date.now() };
+      var table = doc.querySelector(".extended-description table.detail-parameters");
+      if (!table) return out;
+      table.querySelectorAll("tr").forEach(function (tr) {
+        var th = tr.querySelector("th");
+        var td = tr.querySelector("td");
+        if (!th || !td) return;
+        var name = labelText(th);
+        var val = td.textContent.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+        if (name === "thc") out.thc = val;
+        else if (name === "sativa") out.sativa = val;
+        else if (name === "indica") out.indica = val;
+      });
+      return out;
+    }
+
+    function paint(card, genes) {
+      if (!card || card.getAttribute("data-sc-genes") === "1") return;
+      var img = card.querySelector("a.image");
+      card.setAttribute("data-sc-genes", "1");
+      if (!img) return;
+      var rows = [];
+      if (genes.thc) rows.push("THC " + genes.thc);
+      if (genes.sativa) rows.push("Sativa " + genes.sativa);
+      if (genes.indica) rows.push("Indica " + genes.indica);
+      if (!rows.length || img.querySelector(".sc-genes")) return;
+      var box = document.createElement("div");
+      box.className = "sc-genes";
+      rows.forEach(function (text) {
+        var s = document.createElement("span");
+        s.textContent = text;
+        box.appendChild(s);
+      });
+      img.appendChild(box);
+    }
+
+    function finish(id, genes) {
+      document.querySelectorAll('.product [data-micro-product-id="' + id + '"]').forEach(function (card) {
+        paint(card, genes);
+      });
+      delete inflight[id];
+    }
+
+    function pump() {
+      while (running < MAX && q.length) {
+        running++;
+        load(q.shift()).then(function () {
+          running--;
+          pump();
+        });
+      }
+    }
+
+    function load(id) {
+      var card = (inflight[id] || [])[0];
+      var a = card && card.querySelector("a.image, a.name");
+      if (!a || !a.pathname || a.pathname === "/") {
+        finish(id, { thc: "", sativa: "", indica: "" });
+        return Promise.resolve();
+      }
+      var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+      var timer = setTimeout(function () {
+        if (ctrl) ctrl.abort();
+      }, 12000);
+      return fetch(a.pathname, {
+        credentials: "same-origin",
+        signal: ctrl ? ctrl.signal : undefined
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error("status");
+          return r.text();
+        })
+        .then(function (html) {
+          var genes = readGenes(html);
+          mem[id] = genes;
+          save();
+          finish(id, genes);
+        })
+        .catch(function () {
+          (inflight[id] || []).forEach(function (c) {
+            c.setAttribute("data-sc-genes", "e");
+          });
+          delete inflight[id];
+        })
+        .then(function () {
+          clearTimeout(timer);
+        });
+    }
+
+    function enqueue(card) {
+      var id = card.getAttribute("data-micro-product-id");
+      if (!id || card.getAttribute("data-sc-genes")) return;
+      if (inflight[id]) {
+        inflight[id].push(card);
+        return;
+      }
+      inflight[id] = [card];
+      q.push(id);
+      pump();
+    }
+
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            io.unobserve(en.target);
+            enqueue(en.target);
+          });
+        },
+        { rootMargin: "300px" }
+      );
+    }
+
+    function scan() {
+      document.querySelectorAll(".product [data-micro-product-id]").forEach(function (card) {
+        if (card.getAttribute("data-sc-genes")) return;
+        var id = card.getAttribute("data-micro-product-id");
+        var hit = fresh(id);
+        if (hit) {
+          paint(card, hit);
+          return;
+        }
+        if (io) io.observe(card);
+        else enqueue(card);
+      });
+    }
+
+    scan();
+    if (document.body && "MutationObserver" in window) {
+      var timer = 0;
+      new MutationObserver(function () {
+        clearTimeout(timer);
+        timer = setTimeout(scan, 200);
+      }).observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   function init() {
     basePad = parseFloat(getComputedStyle(document.body).paddingBottom) || 0;
     bar = document.getElementById("saleBar");
@@ -140,6 +330,7 @@
     initSticky();
     unlazy();
     hpRating();
+    geneBadges();
     layout();
     addEventListener("scroll", up, { passive: true });
     addEventListener("resize", up, { passive: true });
