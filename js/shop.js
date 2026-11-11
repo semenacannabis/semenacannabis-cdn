@@ -346,20 +346,38 @@
     init();
   }
 
-  /* TAWK.TO */
+  /* TAWK.TO – načíst až po první interakci, nejpozději 5 s po načtení stránky (T5, rychlost) */
   window.Tawk_API = window.Tawk_API || {};
-  window.Tawk_LoadStart = new Date();
   window.Tawk_API.customStyle = {
     visibility: {
       mobile: { position: "br", xOffset: 8, yOffset: 72 },
       desktop: { position: "br", xOffset: 16, yOffset: 16 }
     }
   };
-  var s1 = document.createElement("script");
-  var s0 = document.getElementsByTagName("script")[0];
-  s1.async = true;
-  s1.src = "https://embed.tawk.to/6adb3a17464c67347245fbf1/1k5k5lrb1";
-  s1.charset = "UTF-8";
-  s1.setAttribute("crossorigin", "*");
-  s0.parentNode.insertBefore(s1, s0);
+  var tawkLoaded = false;
+  var tawkEvents = ["pointerdown", "keydown", "scroll", "touchstart"];
+  function loadTawk() {
+    if (tawkLoaded) return;
+    tawkLoaded = true;
+    tawkEvents.forEach(function (ev) {
+      window.removeEventListener(ev, loadTawk, { passive: true });
+    });
+    window.Tawk_LoadStart = new Date();
+    var s1 = document.createElement("script");
+    var s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/6adb3a17464c67347245fbf1/1k5k5lrb1";
+    s1.charset = "UTF-8";
+    s1.setAttribute("crossorigin", "*");
+    s0.parentNode.insertBefore(s1, s0);
+  }
+  tawkEvents.forEach(function (ev) {
+    window.addEventListener(ev, loadTawk, { passive: true });
+  });
+  function tawkTimer() { setTimeout(loadTawk, 5000); }
+  if (document.readyState === "complete") {
+    tawkTimer();
+  } else {
+    window.addEventListener("load", tawkTimer);
+  }
 })();
