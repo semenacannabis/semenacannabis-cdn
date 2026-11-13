@@ -344,12 +344,11 @@ body.ordering-process .sale-bar {
   position: absolute;
   z-index: 4;
   left: 6px;
+  right: 6px;
   bottom: 6px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 3px;
-  max-width: calc(100% - 12px);
   pointer-events: none;
 }
 
@@ -357,9 +356,13 @@ body.ordering-process .sale-bar {
   max-width: 100%;
   padding: 2px 5px;
   border-radius: 4px;
-  background: rgba(12, 32, 16, 0.88);
+  background: #2a7d46;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
   line-height: 1.25;
 }
+
+/* stranka Hodnoceni obchodu (13. 11. 2026) */
+.in-hodnoceni-obchodu h1{font-weight:800;color:#1c2b23}.in-hodnoceni-obchodu .rate-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:24px 40px;background:#2a7d46;color:#fff;border-radius:18px;padding:24px 28px;margin:10px 0 18px}.in-hodnoceni-obchodu .rate-average-wrap{flex:0 0 auto}.in-hodnoceni-obchodu .rate-average{color:#fff;font-size:64px;font-weight:800;line-height:1}.in-hodnoceni-obchodu .rate-average-wrap .stars-label{color:#e6f4ea;font-size:15px;font-weight:700}.in-hodnoceni-obchodu .rate-average-wrap .star{filter:brightness(0) invert(1)}.in-hodnoceni-obchodu .votes{flex:1 1 320px;min-width:0}.in-hodnoceni-obchodu .rate-list{margin:3px 0}.in-hodnoceni-obchodu .rate-list .rate-value{color:#fff;font-weight:700}.in-hodnoceni-obchodu .rate-list .star{filter:brightness(0) invert(1);opacity:.85}.in-hodnoceni-obchodu .rate-bar::before,.in-hodnoceni-obchodu .rate-bar::after{background:#f2b01e!important;border-radius:8px}.in-hodnoceni-obchodu .rate-count{color:#fff!important;font-weight:700}.in-hodnoceni-obchodu .add-comment{margin:0 0 22px}.in-hodnoceni-obchodu .add-comment .btn{background:#2a7d46!important;border-color:#2a7d46!important;color:#fff!important;border-radius:24px;padding:10px 22px;font-weight:700;font-size:15px}.in-hodnoceni-obchodu .add-comment .btn:hover{background:#23693b!important}.in-hodnoceni-obchodu .vote-form{background:#f4fbf5;border:1px solid #d7eadb;border-radius:16px;padding:20px;margin-bottom:22px}.in-hodnoceni-obchodu #ratingsList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;border:0}.in-hodnoceni-obchodu #ratingsList .vote-wrap{background:#fff;border:1px solid #d7eadb!important;border-radius:16px;padding:16px 18px;margin:0;box-shadow:0 1px 3px rgba(28,43,35,.04)}.in-hodnoceni-obchodu #ratingsList .vote-wrap:hover{border-color:#2a7d46!important}.in-hodnoceni-obchodu .vote-name{font-weight:800;color:#2a7d46}.in-hodnoceni-obchodu .vote-time{color:#888}.in-hodnoceni-obchodu .vote-content{color:#333;font-size:15px;line-height:1.55;margin-top:8px}.in-hodnoceni-obchodu .pagination{margin-top:20px}.in-hodnoceni-obchodu .pagination .btn{border-radius:24px}@media(max-width:767px){ .in-hodnoceni-obchodu .rate-wrap{padding:18px;gap:14px;border-radius:14px} .in-hodnoceni-obchodu .rate-average{font-size:48px} .in-hodnoceni-obchodu #ratingsList{grid-template-columns:1fr} .in-hodnoceni-obchodu .add-comment .btn{width:100%}}.in-hodnoceni-obchodu .rate-average-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.in-hodnoceni-obchodu .rate-star-wrap{display:flex;flex-direction:column;gap:6px}.in-hodnoceni-obchodu .rate-star-wrap .stars-label{position:static!important;display:block;margin:0;transform:none!important}.in-hodnoceni-obchodu .rate-bar{background:#f2b01e!important;height:10px!important;min-width:6px}.in-hodnoceni-obchodu #ratingsList .vote-wrap .vote-wrap{background:#f4fbf5;border-color:#d7eadb!important;margin-top:10px;box-shadow:none}
