@@ -381,3 +381,96 @@
     window.addEventListener("load", tawkTimer);
   }
 })();
+
+/* Oprava překlepů ve vyhledávání – SEMENACANNABIS.CZ
+   Shoptet neumí synonyma ani překlepy. Skript opraví známé překlepy:
+   1) při odeslání hledání (formulář s polem "string") ještě před odesláním,
+   2) na stránce /vyhledavani/ (odkazy zvenku, historie) přesměruje na opravený dotaz.
+   Na stránce výsledků ukáže řádek „Hledal jsi „…“, ukazujeme výsledky pro „…““.
+   Slovník doplňovat podle Statistiky › Hledání na webu (dotazy s 0 výsledky). */
+(function () {
+  "use strict";
+
+  // [překlep (regulární výraz na celé slovo), správný tvar]
+  var RULES = [
+    [/\bwhitewidow\b/g, "white widow"],
+    [/\bwhite (window|vidow|widdow|wido|widov)\b/g, "white widow"],
+    [/\bjackherer\b/g, "jack herer"],
+    [/\b(herrer|hererr|herrerr)\b/g, "herer"],
+    [/\b(amnezia|amnesie|amnezie|amnezia)\b/g, "amnesia"],
+    [/\bgorila\b/g, "gorilla"],
+    [/\b(nothern|northen|nortern|nothen)\b/g, "northern"],
+    [/\bnorthern light\b/g, "northern lights"],
+    [/\b(kritikal|kritical|kritikl|critikal)\b/g, "critical"],
+    [/\b(bluberry|blueberi|blubery|bluebery|bluberi)\b/g, "blueberry"],
+    [/\bgelatto\b/g, "gelato"],
+    [/\b(zkitlez|zkittles|skittles|skittlez|zkitles)\b/g, "zkittlez"],
+    [/\btropikana\b/g, "tropicana"],
+    [/\bsherbert\b/g, "sherbet"],
+    [/\b(runts|rantz|rants)\b/g, "runtz"],
+    [/\b(chese|chesse)\b/g, "cheese"],
+    [/\bauto ?flover\b/g, "autoflower"],
+    [/\bauto flower\b/g, "autoflower"],
+    [/\brychlo ?kvetouci\b/g, "rychlekvetouci"],
+    [/\bfast ?budz\b/g, "fastbuds"],
+    [/\b(barnys|barnes)\b/g, "barneys"],
+    [/\bdutch pasion\b/g, "dutch passion"]
+  ];
+
+  function fix(q) {
+    if (!q) return q;
+    var s = String(q).toLowerCase().replace(/\s+/g, " ").trim();
+    var out = s;
+    for (var i = 0; i < RULES.length; i++) out = out.replace(RULES[i][0], RULES[i][1]);
+    return out === s ? q : out;
+  }
+
+  if (typeof module !== "undefined" && module.exports) module.exports = { fix: fix, RULES: RULES };
+  if (typeof document === "undefined") return;
+
+  var KEY = "scSearchFix";
+  function remember(from, to) {
+    try { sessionStorage.setItem(KEY, JSON.stringify({ from: from, to: to })); } catch (e) {}
+  }
+
+  // 1) oprava při odeslání formuláře
+  document.addEventListener("submit", function (ev) {
+    var form = ev.target;
+    if (!form || !form.querySelector) return;
+    var input = form.querySelector('input[name="string"]');
+    if (!input) return;
+    var before = input.value;
+    var after = fix(before);
+    if (after !== before) {
+      input.value = after;
+      remember(before, after);
+    }
+  }, true);
+
+  // 2) stránka výsledků: přesměrování + informační řádek
+  function onResults() {
+    if (!/^\/vyhledavani\//.test(location.pathname)) return;
+    var params = new URLSearchParams(location.search);
+    var q = params.get("string");
+    var fixed = fix(q);
+    if (q && fixed !== q) {
+      remember(q, fixed);
+      params.set("string", fixed);
+      location.replace(location.pathname.replace(/strana-\d+\/$/, "") + "?" + params.toString());
+      return;
+    }
+    var info = null;
+    try { info = JSON.parse(sessionStorage.getItem(KEY) || "null"); sessionStorage.removeItem(KEY); } catch (e) {}
+    if (!info || !q || fix(info.from) !== q.toLowerCase().replace(/\s+/g, " ").trim()) return;
+    var h1 = document.querySelector("h1");
+    if (!h1 || document.querySelector(".sc-search-fix")) return;
+    var p = document.createElement("p");
+    p.className = "sc-search-fix";
+    p.style.cssText = "margin:8px 0 16px;padding:10px 14px;background:#f3faf5;border:1px solid #d5ecdc;border-radius:10px;font-size:15px;color:#333";
+    p.appendChild(document.createTextNode("Hledal jsi „" + info.from + "“, ukazujeme výsledky pro „" + info.to + "“."));
+    h1.parentNode.insertBefore(p, h1.nextSibling);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onResults);
+  else onResults();
+})();
