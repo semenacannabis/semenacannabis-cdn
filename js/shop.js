@@ -387,7 +387,9 @@
    1) při odeslání hledání (formulář s polem "string") ještě před odesláním,
    2) na stránce /vyhledavani/ (odkazy zvenku, historie) přesměruje na opravený dotaz.
    Na stránce výsledků ukáže řádek „Hledal jsi „…“, ukazujeme výsledky pro „…““.
-   Slovník doplňovat podle Statistiky › Hledání na webu (dotazy s 0 výsledky). */
+   Slovník doplňovat podle Statistiky › Hledání na webu (dotazy s 0 výsledky).
+   Navíc: slovo, které není mezi slovy našich produktů/kategorií (VOCAB), se nahradí
+   nejbližším slovem (1 překlep u 5–7 písmen, 2 u 8+), např. vhite widov → white widow. */
 (function () {
   "use strict";
 
@@ -417,11 +419,52 @@
     [/\bdutch pasion\b/g, "dutch passion"]
   ];
 
+  // Slova z adres našich produktů a kategorií (seřazená podle četnosti). Slovo, které tu je, se nikdy nemění.
+  var VOCAB = "seeds semena sweet znacka royal barneys queen green house sensi passion dutch genetics kannabia white delicious vyprodej vision seedsman feminizovana konopi super purple cookies skunk blimburn critical paradise ganja samonakvetaci lemon ripper farmer buddha ethos gelato amnesia seedstockers nirvana gorilla exotic widow punch cheese diesel cannabis cream dream anesia version northern label kalashnikov candy advanced original banana research ministry zkittlez black strawberry autoflowering runtz strains tyson humboldt blueberry sativa organisation triko silent sherbet herer orange wedding poison lights doctor cherry spectrum light female rychlekvetouci philosopher mimosa genetiky flowering early berry vysokym silver mango konopny kapky feminizovane choice skywalker semen scout mintz marihuany mandarine feminized caramel bubba bruce baleni pineapple obsahem juice durban russian power peyote outdoor novinky medical indoor indica crystal collection banner ultra toxic sunset sugar somango pokus papirky hybrid hindu genetika devil crack zombie tangie tacek sorbet plant papaya ovocne mazar ksiltovka killer fruit cheesecake zapalovac tangerine shark rolovaci reserva rainbow privada prichuti odrud negra monster mamba jealousy honey express dwarf drticka domina cookie bubblegum bubble brain assorted zvirata zelena velka vaporizer tropicanna trainwreck think swiss speed special samonakvetacich rychle regular organicke oranzova odrudy neville nejvynosnejsi mandarin landrace kvetouci kosher indika guava fruity filtry fenixovy delight blaze blanca blackberry autoflower arjan apricot apple alaskan afghani afghan watermelon valley ultimate triple swami steve semenacannabis school santa ryder roses relief radical quick produkty pomer obleceni objednavce nikki monkey mexican merch melon matic lemonade kovovy konopne konopna jelly jamaican integra ideal happy great grape golosa ghost garlic fritter fotoperiodicke forbidden flowermate flash exodus eleven dosidos deangelo dayzen daddy coast clipper chunk chocolate chemdog chemdawg cerne cannaline californian california breath break boost biscotti badazz americke zweet zvlhcujici zenzation zaloha wreck world wonder wappa vyrobit vynosovou vynosne vyjimecnymi vlastnostmi vlastnosti vlastni vitezove victory velkoobchodni vaporizery unknown tulip tropicana tropical tridilna trichome train therapy surfer sunrise sunday strong strain sticky stastna stash speedy slush siberian short shiva shining sherbert sestav sensible seminka sacek rhino revoluce regulerni raspberry pumpkin pruvodce praha pound poppers plastova permanent pearl ostatni oreoz oldschool odruda night nicole nejrychlejsi nejlepsi nebula mystic muffin mother moscow moderni milky melonade medikit master marta marmalate marijuana magnum machine linie lecive kushman kushberry krush krash kovova kosmetika konec kolekci klasiky kerosene karibbean karamel kalashnikova jamaica ikonicka ikona hyperion hulkberry highcloudz hellfire harlequin gypsy gushers gummy growshop grizzly greenhouse grapefruit golden godfather goatlato gnomo glueberry genetik gelat gardens fuego frosting frosted frisian fotoperiodickych force flower florida fialova fastflower evrope euphoria euforia energy enemy dynamite dynamicky durga drizzle dreams double divine diablo desfran dedoverde darky crescendo crasher cough cotton corkscrew compassion company classics cindy church chemical cheesy charlotte cerna celorocnich celebrity caramelo burger bulldog brothers bride bodhi banger ayahuasca angel amsterdam amnesi alien zushi ztrawberry zreknuti znemanaji zmenily zluty zluta zkittelz zkittalicious zkitt zkatky zillions zensation zakaz zajimavy yummy xtreme wombat woman wizard witch whiteberry western washing warden walker wafflez vznikaji vyvazenym vyuzivani vydrzi vybrat vraci vibez vetruvzdorny vesta vertigo verime venus veneno velvet vanilla utulku usmev underground umele umami ukoncuje udaje ucinky ubijza turing truthband trucker trilogene trees touch tooth tokamak toffee toasted titan tijuana thunderfuck tezla texty terra terpyz terpeny terpenes tequila taurinem tatin tatanka tarte tanie taangie syrup sweety supreme sugarlato subcool studio stress stravy store state starfire stare stardust stardawg stale spoetnik spirit spicy spice space solomatic solfire snurka smoothie smite smashberry slurricane slovnik slevy sleepy skittlez sitkem sideral sianie shooter shogun shock shiskaberry sherblato shawty shaman serious semeny seesdman seedsv seedshttps seedbanky screwdriver satin sapphire sangre samsara sampony sagarmatha rozdily rozdil rozcestnik rostliny rostlinach rolling rodice rider resin relax reklamacni reina regularni reggae regeneraci racer quasar pyramid purps purplematic punchline punchberry pulsar prohlaseni prodigy pridej prenosny prace potraviny positronics popelnik pomaha polaris pojmu podminky pochoutky platinum platba plastovy planet pinot pilot phytogenetics phoenix philo pheno pestovat persian perfect pebbles peanut peach payton patron parametry paradox panty pandora panama pamlsky pamir painkiller osvetlenim orion originals orient opticomplex opium omylu oleje oficialni odrudami odpovednosti obchodni nurse novinek novela north nordle noise noche niagara nektere nejvetsich nejsilnejsich natural nastup narkosis narcos napad naklicit nadoba mutant multipack muffins muerte mountain mosca morpheus money molotov mokums mokum mohan modely misty mikroskop mikromachine mighty meringue mephisto mental mendocino mendo member melounovou mellow megaton medxotic medusa medicinskeho medic mazlicci mazari maximus mataro masterkush marula marker marihuane maria maracuya mangovou mandala mamiko mamacita malibu malawi malasa maker magazin luxusni lovin london lockdown lobster lizatka lithium lineage limoncello limitovana lilac lightbuds liberty level letech lemonchello lemonberry lekarsky legislativa legendary legendarni legend legalne legalizace lecebne layer laughing larry language kvety kushage kubansky kuban kterym krumble kritikal kritic kreamy kraken kontakt konopnych konopnou konopim kompletni kolagen kofeinem kocky kockam klonovat klasik khalifa katyusha katalogu karel kapsovy kapsle kandy kabul kabrales kaboom jungle juicy jorge joint johny joanne jinxproof jejich james jambo jacky italia island inzanity inteligence inspirovane indigo impact ibiza hyperborea hybridni hunters horror honeybells homocaust hollands hlinikova hippie himalayan himalaya highness hermana heavyweight headband hawaiian hawaii hammock hairy guanabana growerschoice grimm grease grandpas grandpa granddady granddaddy grandaddy grand gorila gokunk glowstarz glookies gipsy ginger giant gestapo genetix geneticke geneticka genehtik gelove gelonade gardene garden future furious fumez fullgas frutero frost frizzy friction french freeze franco fraggle fotoperiodickymi fotoperiodicka forum floater first fingers finder fever fernando fenocan fastberry farmers fantasy fanta family fairy extrakty expert exclusive evropskeho epsilon enigma emerald elite elementz ekologicky efektem edice drzet dragon dough dorado doprava doplnky donkey dominator domaci dolato dlouho djeep dinafem different diavolo diamonds devotchka detroit detem detail desert descojack depot delimed delhi delahaze deimos death darkstar dance damnesia daiquiri cultured cucaracha crunch crockett critic criminal creeper creamatic crackers cosmos copacobana cookielato connection congo compound colours colorado colombian colin cobalt cloud cleopatra citradelic cinderella chulo chronic chocolopez chocoloco chocobang choco chimera chile chempie chaos champagne cervena casket cashew carnival caramelow caramello captain cannapot calamity bylinky butter bullet bulldozer budoucnosti budmint bubblelicious bubatz brooklyn broad briska breed brains boruvkovou booberry booba bluematic bliss bitch beyond berries belladonna bella bears bazooka battle barvy barney banshee bananen bananas bananaberry balls balici bakers baikal babushka automaton autoflowery aurora atomical atlas apollo anaconda amnesika americka amajikoym altai alpine alpha aloha allkush alienz alieanz airlines agartha afrodite afrodita africa afgooey afghanica afgani admin acapulco absolute".split(" ");
+  var KEEP = "vdova bila bilou levne levna darek darky zdarma hnojivo hnojiva drticka papirky substrat kvetinac semena seminka seminko konopi marihuana marihuany outdoor indoor regular regularni landrace triploid fialova zelena tricko trika mikina".split(" ");
+  var INDEX = {};
+  for (var vi = 0; vi < VOCAB.length; vi++) INDEX[VOCAB[vi]] = vi;
+  for (var ki = 0; ki < KEEP.length; ki++) if (!(KEEP[ki] in INDEX)) INDEX[KEEP[ki]] = -1;
+
+  function dist(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    var d = [], i, j;
+    for (i = 0; i <= a.length; i++) { d[i] = [i]; }
+    for (j = 1; j <= b.length; j++) d[0][j] = j;
+    for (i = 1; i <= a.length; i++) {
+      var rowMin = max + 1;
+      for (j = 1; j <= b.length; j++) {
+        var c = a[i - 1] === b[j - 1] ? 0 : 1;
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+        if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+        if (d[i][j] < rowMin) rowMin = d[i][j];
+      }
+      if (rowMin > max) return max + 1;
+    }
+    return d[a.length][b.length];
+  }
+
+  function plain(w) {
+    return w.normalize ? w.normalize("NFD").replace(/[̀-ͯ]/g, "") : w;
+  }
+
+  function fuzzyWord(w) {
+    var p = plain(w);
+    if (p.length < 5 || !/^[a-z]+$/.test(p) || p in INDEX) return w;
+    var max = p.length >= 8 ? 2 : 1, best = null, bestD = max + 1;
+    for (var i = 0; i < VOCAB.length; i++) {
+      var d = dist(p, VOCAB[i], max);
+      if (d < bestD) { bestD = d; best = VOCAB[i]; if (d === 1 && max === 1) break; }
+    }
+    return best || w;
+  }
+
   function fix(q) {
     if (!q) return q;
     var s = String(q).toLowerCase().replace(/\s+/g, " ").trim();
     var out = s;
     for (var i = 0; i < RULES.length; i++) out = out.replace(RULES[i][0], RULES[i][1]);
+    out = out.split(" ").map(fuzzyWord).join(" ");
     return out === s ? q : out;
   }
 
