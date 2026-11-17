@@ -462,7 +462,11 @@
     var info = null;
     try { info = JSON.parse(sessionStorage.getItem(KEY) || "null"); sessionStorage.removeItem(KEY); } catch (e) {}
     if (!info || !q || fix(info.from) !== q.toLowerCase().replace(/\s+/g, " ").trim()) return;
-    var h1 = document.querySelector("h1");
+    var heads = document.querySelectorAll("h1, h2");
+    var h1 = null;
+    for (var k = 0; k < heads.length; k++) {
+      if (/Výsledky vyhledávání/i.test(heads[k].textContent)) { h1 = heads[k]; break; }
+    }
     if (!h1 || document.querySelector(".sc-search-fix")) return;
     var p = document.createElement("p");
     p.className = "sc-search-fix";
