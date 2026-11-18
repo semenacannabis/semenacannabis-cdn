@@ -521,3 +521,60 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onResults);
   else onResults();
 })();
+
+/* === 404 stránka: sklizeno + chytré hledání + linie + hra (18. 11. 2026) === */
+(function(){function run(){if(!document.body||!document.body.classList.contains("id-404"))return;var c=document.getElementById("content");if(!c||document.getElementById("sc404"))return;var w=document.createElement("div");w.id="sc404";w.innerHTML="\n<style>.id-404 .discussionContainer,.id-404 #discussion-form,.id-404 .add-comment{display:none!important}\n#sc404{--g:#2a7d46;--g2:#1c5a32;--l:#f3faf5;--b:#d5ecdc;font-family:Ubuntu,Arial,sans-serif;color:#1c2b23}\n#sc404 .hero{background:linear-gradient(135deg,#123d24,#2a7d46);color:#fff;border-radius:16px;padding:28px 22px;position:relative;overflow:hidden}\n#sc404 .hero h1{margin:0 0 8px;font-size:28px;line-height:1.2;color:#fff !important}\n#sc404 .hero p{color:#fff !important;margin:0;font-size:16px;line-height:1.55;max-width:560px;opacity:.95}\n#sc404 .pot{position:absolute;right:22px;bottom:14px;width:90px;height:90px}\n#sc404 .leaf{transform-origin:45px 30px;animation:sc404fall 4s ease-in 1s infinite}\n@keyframes sc404fall{0%{transform:translate(0,0) rotate(0);opacity:1}70%{transform:translate(-26px,48px) rotate(-70deg);opacity:1}100%{transform:translate(-30px,56px) rotate(-80deg);opacity:0}}\n#sc404 .card{background:var(--l);border:1px solid var(--b);border-left:5px solid var(--g);border-radius:12px;padding:16px 18px;margin:18px 0}\n#sc404 .card h2{margin:0 0 6px;font-size:18px;color:var(--g2)}\n#sc404 .card p{margin:0 0 12px;font-size:15px;line-height:1.5}\n#sc404 .btn{display:inline-block;padding:10px 18px;background:var(--g);color:#fff;border-radius:999px;text-decoration:none;font-weight:bold;font-size:15px;border:0;cursor:pointer}\n#sc404 .btn:hover{background:var(--g2)}\n#sc404 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}\n#sc404 .chips a{padding:6px 12px;border:1px solid var(--b);background:#fff;border-radius:999px;color:var(--g2);text-decoration:none;font-size:14px}\n#sc404 .game{text-align:center;margin:22px 0}\n#sc404 .game h2{font-size:20px;margin:0 0 4px;color:var(--g2)}\n#sc404 .game .sub{font-size:14px;color:#555;margin:0 0 10px}\n#sc404 .board{position:relative;display:inline-block;max-width:100%}\n#sc404 canvas{display:block;width:min(420px,100%);height:auto;border-radius:12px;background:#f7fbf4;border:2px solid var(--b);touch-action:none}\n#sc404 .over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(18,61,36,.82);color:#fff;border-radius:12px;padding:12px}\n#sc404 .over b{font-size:22px;margin-bottom:6px}\n#sc404 .over span{font-size:14px;margin-bottom:12px;opacity:.9}\n#sc404 .score{font-size:14px;margin-top:8px;color:#333}\n#sc404 .pad{display:none;margin:10px auto 0;gap:6px;grid-template-columns:repeat(3,52px);justify-content:center}\n#sc404 .pad button{height:44px;border-radius:10px;border:1px solid var(--b);background:var(--l);font-size:18px;color:var(--g2)}\n@media (max-width:600px){#sc404 .hero h1{font-size:23px}#sc404 .pot{width:64px;height:64px;right:12px;bottom:10px}#sc404 .hero p{padding-right:60px}#sc404 .pad{display:grid}}\n</style>\n\n<div class=\"hero\">\n  <h1>Jejda… tady už je sklizeno.</h1>\n  <p>Tahle odrůda zmizela ze sbírky dřív, než jsi dorazil. Semínka se rozebrala a v květináči zůstal jen poslední lístek. Ale sbírka jde dál.</p>\n  <svg class=\"pot\" viewBox=\"0 0 90 90\" aria-hidden=\"true\">\n    <path d=\"M22 52h46l-6 32H28z\" fill=\"#c8794a\"/><rect x=\"18\" y=\"46\" width=\"54\" height=\"9\" rx=\"3\" fill=\"#a9603a\"/>\n    <path d=\"M45 46V30\" stroke=\"#8fd19e\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n    <g class=\"leaf\"><path d=\"M45 30c-10-2-16-10-15-18 9 1 15 8 15 18z\" fill=\"#8fd19e\"/></g>\n  </svg>\n</div>\n\n<div class=\"card\" id=\"sc404-hledam\" hidden>\n  <h2>Hledáš <span id=\"sc404-nazev\"></span>?</h2>\n  <p>Stejnou genetiku často vede víc seedbank nebo jiná verze balení. Mrkni, co z ní u nás ještě roste.</p>\n  <a class=\"btn\" id=\"sc404-hledat\" href=\"/vyhledavani/\">Ukaž, co máme →</a>\n</div>\n\n<div class=\"card\">\n  <h2>🧬 Odrůdy se vyprodávají, genetika zůstává</h2>\n  <p>V genetických liniích najdeš celé rodiny pohromadě: feminizované celoroční, samonakvétací i rychlekvetoucí verze vedle sebe. Když zmizí jedna, sestřenice čekají o kousek vedle.</p>\n  <a class=\"btn\" href=\"/geneticke-linie/\">Projít genetické linie →</a>\n  <div class=\"chips\">\n    <a href=\"/gorilla/\">Gorilla</a><a href=\"/cookies/\">Cookies</a><a href=\"/white-widow/\">White Widow</a><a href=\"/og/\">OG Kush</a><a href=\"/haze/\">Haze</a><a href=\"/gelato/\">Gelato</a><a href=\"/zkittlez/\">Zkittlez</a>\n  </div>\n  <div class=\"chips\">\n    <a href=\"/novinky-feminizovane-semena/\">Novinky</a><a href=\"/vyprodej-semen-marihuany/\">Výprodej</a><a href=\"/slevy/\">Akce 1+1 a 2+1</a>\n  </div>\n</div>\n\n<div class=\"game\">\n  <h2>Sklizeno? Tak si nasbírej vlastní.</h2>\n  <p class=\"sub\">Veď úponek k semínkům. Každé semínko = nový lístek. Nenaraz do okraje ani do sebe.</p>\n  <div class=\"board\">\n    <canvas id=\"sc404-c\" width=\"420\" height=\"420\" aria-label=\"Hra: sbírej semínka\"></canvas>\n    <div class=\"over\" id=\"sc404-over\"><b id=\"sc404-t\">Připraven na sklizeň?</b><span id=\"sc404-s\">Šipky na klávesnici nebo přejeď prstem.</span><button class=\"btn\" id=\"sc404-start\">Spustit sklizeň</button></div>\n  </div>\n  <div class=\"pad\" aria-hidden=\"true\"><span></span><button data-d=\"0,-1\">▲</button><span></span><button data-d=\"-1,0\">◀</button><button data-d=\"0,1\">▼</button><button data-d=\"1,0\">▶</button></div>\n  <div class=\"score\">Úroda: <b id=\"sc404-sc\">0</b> semínek · Rekord: <b id=\"sc404-best\">0</b></div>\n</div>\n\n\n";c.innerHTML="";c.appendChild(w);
+(function(){
+  /* --- chytré hledání podle adresy --- */
+  var path=(window.SC404_PATH||location.pathname).replace(/^\/|\/$/g,'');
+  var slug=path.split('/').pop().split('---')[0].replace(/^vyprodej-|^akce-|^novinka-/,'');
+  var words=slug.split('-').filter(function(w){return w && !/^(semena|seminka|feminizovana|samonakvetaci|autoflowering|fast|f1|cbd|konopi|marihuany|auto)$/.test(w)}).slice(0,4);
+  if(words.length){
+    var name=words.map(function(w){return w.charAt(0).toUpperCase()+w.slice(1)}).join(' ');
+    document.getElementById('sc404-nazev').textContent=name;
+    document.getElementById('sc404-hledat').href='/vyhledavani/?string='+encodeURIComponent(words.join(' '));
+    document.getElementById('sc404-hledam').hidden=false;
+  }
+  /* --- hra: úponek sbírá semínka --- */
+  var c=document.getElementById('sc404-c'),x=c.getContext('2d'),N=14,S=c.width/N;
+  var snake,dir,next,seed,score,timer,run=false,best=0;
+  try{best=+localStorage.getItem('sc404best')||0}catch(e){}
+  document.getElementById('sc404-best').textContent=best;
+  function place(){do{seed={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}while(snake.some(function(p){return p.x===seed.x&&p.y===seed.y}))}
+  function reset(){snake=[{x:5,y:7},{x:4,y:7},{x:3,y:7}];dir={x:1,y:0};next=dir;score=0;place();upd()}
+  function upd(){document.getElementById('sc404-sc').textContent=score}
+  function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle='#eef6ea';for(var i=0;i<N;i++)for(var j=0;j<N;j++)if((i+j)%2)x.fillRect(i*S,j*S,S,S);
+    /* semínko */
+    x.save();x.translate(seed.x*S+S/2,seed.y*S+S/2);x.rotate(.5);x.fillStyle='#7a5230';x.beginPath();x.ellipse(0,0,S*.22,S*.32,0,0,7);x.fill();x.fillStyle='#a77a4c';x.beginPath();x.ellipse(-S*.05,-S*.08,S*.07,S*.12,0,0,7);x.fill();x.restore();
+    /* úponek */
+    x.strokeStyle='#2a7d46';x.lineWidth=S*.32;x.lineCap='round';x.lineJoin='round';x.beginPath();
+    snake.forEach(function(p,i){var px=p.x*S+S/2,py=p.y*S+S/2;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
+    snake.forEach(function(p,i){if(i&&i%2===0){x.fillStyle='#5cb85c';x.beginPath();x.ellipse(p.x*S+S*.75,p.y*S+S*.3,S*.18,S*.09,-.6,0,7);x.fill()}});
+    var h=snake[0];x.fillStyle='#8fd19e';x.beginPath();x.arc(h.x*S+S/2,h.y*S+S/2,S*.26,0,7);x.fill();
+  }
+  function step(){
+    dir=next;var h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(function(p){return p.x===h.x&&p.y===h.y})){return end()}
+    snake.unshift(h);
+    if(h.x===seed.x&&h.y===seed.y){score++;upd();place()}else snake.pop();
+    draw();
+  }
+  function end(){run=false;clearInterval(timer);
+    if(score>best){best=score;try{localStorage.setItem('sc404best',best)}catch(e){}document.getElementById('sc404-best').textContent=best}
+    document.getElementById('sc404-t').textContent='Úroda: '+score+(score===1?' semínko':score>=2&&score<=4?' semínka':' semínek');
+    document.getElementById('sc404-s').textContent=score>=10?'Tohle je sběratelská sklizeň.':'Zkus to znovu, sbírka čeká.';
+    document.getElementById('sc404-start').textContent='Zahrát znovu';
+    document.getElementById('sc404-over').style.display='flex';}
+  function start(){reset();draw();run=true;document.getElementById('sc404-over').style.display='none';clearInterval(timer);timer=setInterval(step,140)}
+  function turn(dx,dy){if(!run)return;if(dx===-dir.x&&dy===-dir.y)return;next={x:dx,y:dy}}
+  document.getElementById('sc404-start').onclick=start;
+  document.addEventListener('keydown',function(e){var k={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];if(k&&run){e.preventDefault();turn(k[0],k[1])}});
+  var t0=null;c.addEventListener('touchstart',function(e){t0=e.touches[0]},{passive:true});
+  c.addEventListener('touchmove',function(e){if(run)e.preventDefault()},{passive:false});
+  c.addEventListener('touchend',function(e){if(!t0)return;var t=e.changedTouches[0],dx=t.clientX-t0.clientX,dy=t.clientY-t0.clientY;if(Math.max(Math.abs(dx),Math.abs(dy))>20){Math.abs(dx)>Math.abs(dy)?turn(dx>0?1:-1,0):turn(0,dy>0?1:-1)}t0=null});
+  document.querySelectorAll('#sc404 .pad button').forEach(function(b){b.onclick=function(){var d=b.dataset.d.split(',');turn(+d[0],+d[1])}});
+  reset();draw();
+})();
+}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run);else run();})();
