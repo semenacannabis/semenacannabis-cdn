@@ -698,9 +698,9 @@
   window.scFiltry = init;
 })();
 
-/* SC filtry – spuštění: zatím jen pro test (?scf=1 zapne, ?scf=0 vypne), varianta C (PC skupiny, mobil seznam) */
+/* SC filtry – spuštění: zapnuto všem (?scf=0 vypne jen pro sebe, ?scf=1 zase zapne), varianta C (PC skupiny, mobil seznam) */
 (function () {
-  try { var q = location.search.match(/[?&]scf=([01])/); if (q) localStorage.setItem('scf', q[1]); if (localStorage.getItem('scf') !== '1') return; } catch (e) { return; }
+  try { var q = location.search.match(/[?&]scf=([01])/); if (q) localStorage.setItem('scf', q[1]); if (localStorage.getItem('scf') === '0') return; } catch (e) { return; }
   function run() { var f = document.getElementById('filters'); if (f && !f.querySelector('.scf-row')) { f.removeAttribute('data-scf'); f.setAttribute('data-variant', 'c'); window.scFiltry(f); } }
   var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(run, 60); }).observe(document.documentElement, { childList: true, subtree: true });
   if (document.readyState !== 'loading') run(); else document.addEventListener('DOMContentLoaded', run);
