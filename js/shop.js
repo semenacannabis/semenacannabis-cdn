@@ -701,7 +701,7 @@
 /* SC filtry – spuštění: zapnuto všem (?scf=0 vypne jen pro sebe, ?scf=1 zase zapne), varianta C (PC skupiny, mobil seznam) */
 (function () {
   try { var q = location.search.match(/[?&]scf=([01])/); if (q) localStorage.setItem('scf', q[1]); if (localStorage.getItem('scf') === '0') return; } catch (e) { return; }
-  function run() { var f = document.getElementById('filters'); if (f && !f.querySelector('.scf-row')) { f.removeAttribute('data-scf'); f.setAttribute('data-variant', 'c'); window.scFiltry(f); } }
+  function run() { var f = document.getElementById('filters'); if (f && !f.querySelector('.scf-row')) { f.removeAttribute('data-scf'); f.setAttribute('data-variant', 'c'); window.scFiltry(f); if (window.scfReopen) setTimeout(window.scfReopen, 80); } }
   var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(run, 60); }).observe(document.documentElement, { childList: true, subtree: true });
   if (document.readyState !== 'loading') run(); else document.addEventListener('DOMContentLoaded', run);
 })();
@@ -716,12 +716,13 @@
     if (t.closest('.scf-done')) try { sessionStorage.removeItem('scf-keep'); } catch (x) {}
   }, true);
   var tries = 0;
-  (function reopen() {
+  window.scfReopen = function reopen() {
     var n; try { n = sessionStorage.getItem('scf-keep'); } catch (x) {} if (!n) return;
     var s = document.querySelector('.scf-sec[data-name="' + n.replace(/"/g, '') + '"]');
     if (!s) { if (tries++ < 40) setTimeout(reopen, 150); return; }
     var root = s.closest('.scf'); if (window.innerWidth <= 767 && root) root.classList.add('scf-mob-open');
     s.classList.add('scf-open');
     window.scrollTo(0, s.getBoundingClientRect().top + window.scrollY - 90);
-  })();
+  };
+  window.scfReopen();
 })();
