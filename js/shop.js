@@ -707,3 +707,21 @@
 })();
 /* SC filtry – přebití stylů šablony vložené z JS (jsDelivr neservíruje nový shop.css kvůli velikosti repa) */
 (function () { if (document.getElementById('scf-fix')) return; var s = document.createElement('style'); s.id = 'scf-fix'; s.textContent = '.scf .scf-body .advanced-filters-wrapper:empty{display:none!important}.scf .scf-body fieldset{display:flex!important;flex-wrap:wrap!important;gap:8px!important}.scf .scf-body fieldset>div{float:none!important;width:auto!important;display:block!important;margin:0!important;padding:0!important;flex:0 0 auto!important}.scf .scf-body label.filter-label{padding:8px 12px!important;margin:0!important;line-height:1.2!important}.scf .scf-body label.filter-label:before,.scf .scf-body label.filter-label:after{display:none!important;content:none!important}'; (document.head || document.documentElement).appendChild(s); })();
+/* SC filtry – po výběru hodnoty (stránka se znovu načte) nechat stejný filtr otevřený, aby šlo vybírat dál */
+(function () {
+  document.addEventListener('click', function (e) {
+    var t = e.target; if (!t.closest) return;
+    var l = t.closest('.scf-body label.filter-label, .scf-body input[type=checkbox]');
+    if (l) { var s = l.closest('.scf-sec'); if (s) try { sessionStorage.setItem('scf-keep', s.getAttribute('data-name')); } catch (x) {} }
+    if (t.closest('.scf-done')) try { sessionStorage.removeItem('scf-keep'); } catch (x) {}
+  }, true);
+  var tries = 0;
+  (function reopen() {
+    var n; try { n = sessionStorage.getItem('scf-keep'); } catch (x) {} if (!n) return;
+    var s = document.querySelector('.scf-sec[data-name="' + n.replace(/"/g, '') + '"]');
+    if (!s) { if (tries++ < 40) setTimeout(reopen, 150); return; }
+    var root = s.closest('.scf'); if (window.innerWidth <= 767 && root) root.classList.add('scf-mob-open');
+    s.classList.add('scf-open');
+    window.scrollTo(0, s.getBoundingClientRect().top + window.scrollY - 90);
+  })();
+})();
