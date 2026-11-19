@@ -603,3 +603,105 @@
   reset();draw();
 })();
 }if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run);else run();})();
+
+/* ===== SC filtry (náhrada Filtry+) ===== */
+/* SC filtry – vlastní vzhled filtrů (náhrada Filtry+). Nepřesouvá inputy mimo #filters, takže filtrování dál dělá Shoptet. */
+(function () {
+  var GROUPS = [ // jen pro variantu C
+    ['Základ', ['Cena', 'Značky', 'Značka', 'Počet semen', 'Na skladě a další']],
+    ['Genetika', ['Indica', 'Sativa', 'Ruderalis', 'USA genetika', 'Vítěz Cannabis Cup', 'Vlastnosti']],
+    ['Kanabinoidy', ['THC', 'CBD', 'CBG']],
+    ['Odrůda', ['Doba květu (indoor)', 'Doba květu (outdoor)', 'Výnos (indoor)', 'Výnos (outdoor)', 'Výška', 'Náročnost']],
+    ['Vůně a chuť', ['Terpeny', 'Terpenový profil']]
+  ];
+  var HIDE = ['10', 'Značka']; // 10 = skrytý parametr pro vyhledávání, Značka = duplicita k Značky // skrytý parametr pro vyhledávání – ve filtrech nezobrazovat
+  function txt(h) { var s = h.querySelector('span'); return (s ? s.textContent : h.textContent).trim(); }
+  function init(root) {
+    if (root.getAttribute('data-scf')) return; root.setAttribute('data-scf', '1');
+    var v = root.getAttribute('data-variant') || 'a';
+    root.classList.add('scf', 'scf-' + v); if (v === 'd') root.classList.add('scf-a');
+    var secs = [];
+    // cena: slider-wrapper + formulář udělat jednou sekcí
+    var sw = root.querySelector('.slider-wrapper');
+    if (sw) { var ps = document.createElement('div'); ps.className = 'filter-section scf-price'; sw.parentNode.insertBefore(ps, sw); var pf = root.querySelector('form[id$="price-filter-form"]'); ps.appendChild(sw); if (pf) ps.appendChild(pf); var h = sw.querySelector('h4'); if (h) ps.insertBefore(h, sw); secs.push(ps); }
+    root.querySelectorAll('.filter-section').forEach(function (s) { if (s.classList.contains('filter-section-count') || s.classList.contains('scf-price')) return; secs.push(s); });
+    var row = document.createElement('div'); row.className = 'scf-row';
+    var holder = root.querySelector('.filter-sections') || root;
+    holder.parentNode.insertBefore(row, holder);
+    secs.forEach(function (s) {
+      if (s.classList.contains('filter-section-boolean')) { // „Na skladě“ apod.: každé zaškrtnutí jako samostatné tlačítko
+        var h4 = document.createElement('h4'); h4.innerHTML = '<span>Na skladě a další</span>'; s.insertBefore(h4, s.firstChild);
+      }
+      var h = s.querySelector('h4'); if (!h) return;
+      var name = txt(h);
+      if (HIDE.indexOf(name) > -1) { s.style.display = 'none'; return; }
+      s.classList.add('scf-sec'); s.setAttribute('data-name', name);
+      var body = document.createElement('div'); body.className = 'scf-body';
+      var tip = h.querySelector('.question-tooltip');
+      if (tip && tip.title) { var d = document.createElement('p'); d.className = 'scf-desc'; d.textContent = tip.title; body.appendChild(d); }
+      Array.prototype.slice.call(s.childNodes).forEach(function (n) { if (n !== h) body.appendChild(n); });
+      // číselné hodnoty seřadit podle čísla (0,03 % < 0,3 % < <1 % < 9 % …)
+      body.querySelectorAll('fieldset').forEach(function (fs) {
+        var items = Array.prototype.slice.call(fs.children).filter(function (x) { return x.tagName === 'DIV' && x.querySelector('label'); });
+        var num = function (x) { var t = x.querySelector('label').childNodes[0].textContent.trim().replace(',', '.'); var m = t.match(/(<)?\s*(\d+(?:\.\d+)?)/); return m ? parseFloat(m[2]) - (m[1] ? 0.001 : 0) : NaN; };
+        if (items.length > 2 && items.filter(function (x) { return !isNaN(num(x)); }).length === items.length) {
+          items.sort(function (a, b) { return num(a) - num(b); }).forEach(function (x) { fs.appendChild(x); });
+          fs.querySelectorAll('input[type=hidden]').forEach(function (x) { fs.appendChild(x); });
+        }
+      });
+      var f = document.createElement('div'); f.className = 'scf-foot'; f.innerHTML = '<button type="button" class="scf-done">Hotovo</button>'; body.appendChild(f);
+      s.appendChild(body);
+      var n = s.querySelectorAll('input[type=checkbox]:checked').length;
+      if (n) { s.classList.add('scf-has'); h.insertAdjacentHTML('beforeend', '<span class="scf-n">' + n + '</span>'); }
+      h.addEventListener('click', function () {
+        var open = s.classList.contains('scf-open');
+        if (window.innerWidth > 767) root.querySelectorAll('.scf-open').forEach(function (o) { o.classList.remove('scf-open'); });
+        s.classList.toggle('scf-open', !open);
+      });
+      f.querySelector('button').addEventListener('click', function () { s.classList.remove('scf-open'); });
+      row.appendChild(s);
+    });
+    if (v === 'd') { // vzhled A, pořadí podle témat, mezi skupinami tenký oddělovač
+      GROUPS.forEach(function (g, gi) { var any = false; g[1].forEach(function (nm) { var s = row.querySelector('.scf-sec[data-name="' + nm + '"]'); if (s) { if (!any && gi) { var sep = document.createElement('span'); sep.className = 'scf-sep'; row.appendChild(sep); } any = true; row.appendChild(s); } }); });
+      row.querySelectorAll('.scf-sec').forEach(function (s) { var nm = s.getAttribute('data-name'); if (!GROUPS.some(function (g) { return g[1].indexOf(nm) > -1; })) row.appendChild(s); });
+    }
+    if (v === 'c') { // seskupit
+      var gw = document.createElement('div'); gw.className = 'scf-groups';
+      GROUPS.forEach(function (g) {
+        var box = document.createElement('div'); box.className = 'scf-group'; box.innerHTML = '<span class="scf-gname">' + g[0] + '</span>';
+        g[1].forEach(function (nm) { var s = row.querySelector('.scf-sec[data-name="' + nm + '"]'); if (s) box.appendChild(s); });
+        if (box.children.length > 1) gw.appendChild(box);
+      });
+      var rest = row.querySelectorAll('.scf-sec');
+      if (rest.length) { var box2 = document.createElement('div'); box2.className = 'scf-group'; box2.innerHTML = '<span class="scf-gname">Další</span>'; rest.forEach(function (s) { box2.appendChild(s); }); gw.appendChild(box2); }
+      row.appendChild(gw); row.classList.add('scf-row-c');
+    }
+    // aktivní filtry jako štítky
+    var act = document.createElement('div'); act.className = 'scf-active';
+    root.querySelectorAll('.scf-body input[type=checkbox]:checked').forEach(function (i) {
+      var l = root.querySelector('label[for="' + (window.CSS && CSS.escape ? CSS.escape(i.id) : i.id) + '"]'); if (!l) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'scf-chip'; var sn = i.closest('.scf-sec'); b.textContent = (sn ? sn.getAttribute('data-name') + ': ' : '') + l.childNodes[0].textContent.trim();
+      b.addEventListener('click', function () { i.click(); }); act.appendChild(b);
+    });
+    row.parentNode.insertBefore(act, row.nextSibling);
+    var cnt = root.querySelector('.filter-total-count strong');
+    if (cnt) { var t = document.createElement('div'); t.className = 'scf-total'; t.innerHTML = 'Položek k zobrazení: <strong>' + cnt.textContent + '</strong>'; act.parentNode.insertBefore(t, act.nextSibling); }
+    // mobil
+    var mb = document.createElement('button'); mb.type = 'button'; mb.className = 'scf-mobbtn';
+    var all = root.querySelectorAll('.scf-body input[type=checkbox]:checked').length;
+    mb.innerHTML = 'Filtrovat' + (all ? ' (' + all + ')' : '');
+    mb.addEventListener('click', function () { root.classList.toggle('scf-mob-open'); });
+    row.parentNode.insertBefore(mb, row);
+    // zavřít panel klikem mimo
+    document.addEventListener('click', function (e) { if (window.innerWidth > 767 && !root.contains(e.target)) root.querySelectorAll('.scf-open').forEach(function (o) { o.classList.remove('scf-open'); }); });
+  }
+  window.scFiltry = init;
+})();
+
+/* SC filtry – spuštění: zatím jen pro test (?scf=1 zapne, ?scf=0 vypne), varianta C (PC skupiny, mobil seznam) */
+(function () {
+  try { var q = location.search.match(/[?&]scf=([01])/); if (q) localStorage.setItem('scf', q[1]); if (localStorage.getItem('scf') !== '1') return; } catch (e) { return; }
+  function run() { var f = document.getElementById('filters'); if (f && !f.querySelector('.scf-row')) { f.removeAttribute('data-scf'); f.setAttribute('data-variant', 'c'); window.scFiltry(f); } }
+  var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(run, 60); }).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState !== 'loading') run(); else document.addEventListener('DOMContentLoaded', run);
+})();
