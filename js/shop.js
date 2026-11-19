@@ -649,7 +649,25 @@
           fs.querySelectorAll('input[type=hidden]').forEach(function (x) { fs.appendChild(x); });
         }
       });
-      var f = document.createElement('div'); f.className = 'scf-foot'; f.innerHTML = '<button type="button" class="scf-done">Hotovo</button>'; body.appendChild(f);
+      var f = document.createElement('div'); f.className = 'scf-foot';
+      var secName = s.getAttribute('data-name'), hist = scfHist(), mine = hist.filter(function (x) { return x[0] === secName; });
+      var hasSel = s.querySelectorAll('input[type=checkbox]:checked').length;
+      f.innerHTML = (mine.length ? '<button type="button" class="scf-back">← Zpět</button>' : '') +
+        (hasSel ? '<button type="button" class="scf-clr">Vymazat filtr</button>' : '') +
+        '<button type="button" class="scf-done">Hotovo</button>';
+      body.appendChild(f);
+      var bk = f.querySelector('.scf-back');
+      if (bk) bk.addEventListener('click', function () {
+        var h2 = scfHist(), idx = -1; for (var k = h2.length - 1; k >= 0; k--) if (h2[k][0] === secName) { idx = k; break; }
+        if (idx < 0) return; var id = h2[idx][1]; h2.splice(idx, 1); scfHistSave(h2);
+        var inp = document.getElementById(id); if (inp && !inp.disabled) { scfSkip = true; inp.click(); scfSkip = false; }
+      });
+      var cl = f.querySelector('.scf-clr');
+      if (cl) cl.addEventListener('click', function () {
+        var codes = {}; s.querySelectorAll('input[type=checkbox]').forEach(function (i) { var c = i.getAttribute('data-filter-code') || i.name; if (c) codes[c.replace('[]', '')] = 1; });
+        scfHistSave(scfHist().filter(function (x) { return x[0] !== secName; }));
+        location.href = scfUrl(function (k) { return codes[k.replace('[]', '')]; });
+      });
       s.appendChild(body);
       var n = s.querySelectorAll('input[type=checkbox]:checked').length;
       if (n) { s.classList.add('scf-has'); h.insertAdjacentHTML('beforeend', '<span class="scf-n">' + n + '</span>'); }
@@ -683,6 +701,11 @@
       var b = document.createElement('button'); b.type = 'button'; b.className = 'scf-chip'; var sn = i.closest('.scf-sec'); b.textContent = (sn ? sn.getAttribute('data-name') + ': ' : '') + l.childNodes[0].textContent.trim();
       b.addEventListener('click', function () { i.click(); }); act.appendChild(b);
     });
+    if (act.children.length > 1) {
+      var ca = document.createElement('button'); ca.type = 'button'; ca.className = 'scf-chip scf-clrall'; ca.textContent = 'Vymazat vše';
+      ca.addEventListener('click', function () { scfHistSave([]); location.href = scfUrl(function (k) { return k !== 'order' && k !== 'utm_source' && k.indexOf('utm_') !== 0; }); });
+      act.appendChild(ca);
+    }
     row.parentNode.insertBefore(act, row.nextSibling);
     var cnt = root.querySelector('.filter-total-count strong');
     if (cnt) { var t = document.createElement('div'); t.className = 'scf-total'; t.innerHTML = 'Položek k zobrazení: <strong>' + cnt.textContent + '</strong>'; act.parentNode.insertBefore(t, act.nextSibling); }
@@ -695,6 +718,26 @@
     // zavřít panel klikem mimo
     document.addEventListener('click', function (e) { if (window.innerWidth > 767 && !root.contains(e.target)) root.querySelectorAll('.scf-open').forEach(function (o) { o.classList.remove('scf-open'); }); });
   }
+  // historie výběrů pro „Zpět“ (per kategorie, v sessionStorage)
+  var scfSkip = false;
+  function scfKey() { return 'scf-hist:' + location.pathname; }
+  function scfHist() { try { return JSON.parse(sessionStorage.getItem(scfKey()) || '[]'); } catch (x) { return []; } }
+  function scfHistSave(a) { try { sessionStorage.setItem(scfKey(), JSON.stringify(a.slice(-30))); } catch (x) {} }
+  // URL bez zvolených parametrů (drop(k) = true → odstranit), vždy bez stránkování
+  function scfUrl(drop) {
+    var q = location.search.replace(/^\?/, '').split('&').filter(function (p) {
+      if (!p) return false; var k = decodeURIComponent(p.split('=')[0]);
+      return !(k === 'page' || drop(k));
+    });
+    return location.pathname.replace(/\/strana-\d+\/?$/, '/') + (q.length ? '?' + q.join('&') : '');
+  }
+  document.addEventListener('click', function (e) {
+    if (scfSkip || !e.target.closest) return;
+    var i = e.target.closest('.scf-body input[type=checkbox]');
+    if (!i) { var l = e.target.closest('.scf-body label.filter-label'); if (l) i = document.getElementById(l.getAttribute('for')); }
+    if (!i || i.disabled) return; var s = i.closest('.scf-sec'); if (!s) return;
+    var h = scfHist(); h.push([s.getAttribute('data-name'), i.id]); scfHistSave(h);
+  }, true);
   window.scFiltry = init;
 })();
 
@@ -706,7 +749,7 @@
   if (document.readyState !== 'loading') run(); else document.addEventListener('DOMContentLoaded', run);
 })();
 /* SC filtry – přebití stylů šablony vložené z JS (jsDelivr neservíruje nový shop.css kvůli velikosti repa) */
-(function () { if (document.getElementById('scf-fix')) return; var s = document.createElement('style'); s.id = 'scf-fix'; s.textContent = '.scf .scf-body .advanced-filters-wrapper:empty{display:none!important}.scf .scf-body fieldset{display:flex!important;flex-wrap:wrap!important;gap:8px!important}.scf .scf-body fieldset>div{float:none!important;width:auto!important;display:block!important;margin:0!important;padding:0!important;flex:0 0 auto!important}.scf .scf-body label.filter-label{padding:8px 12px!important;margin:0!important;line-height:1.2!important}.scf .scf-body label.filter-label:before,.scf .scf-body label.filter-label:after{display:none!important;content:none!important}'; (document.head || document.documentElement).appendChild(s); })();
+(function () { if (document.getElementById('scf-fix')) return; var s = document.createElement('style'); s.id = 'scf-fix'; s.textContent = '.scf .scf-body .advanced-filters-wrapper:empty{display:none!important}.scf .scf-body fieldset{display:flex!important;flex-wrap:wrap!important;gap:8px!important}.scf .scf-body fieldset>div{float:none!important;width:auto!important;display:block!important;margin:0!important;padding:0!important;flex:0 0 auto!important}.scf .scf-body label.filter-label{padding:8px 12px!important;margin:0!important;line-height:1.2!important}.scf .scf-body label.filter-label:before,.scf .scf-body label.filter-label:after{display:none!important;content:none!important}.scf .scf-foot{display:flex!important;justify-content:flex-end;flex-wrap:wrap;gap:8px}.scf .scf-back,.scf .scf-clr{cursor:pointer;background:#fff;color:var(--g2);border:1.5px solid var(--gb);font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}.scf .scf-back{margin-right:auto}.scf .scf-back:hover,.scf .scf-clr:hover{border-color:var(--g)}.scf .scf-chip.scf-clrall{background:transparent!important;color:#a33!important;text-decoration:underline}.scf .scf-chip.scf-clrall:after{content:""!important}.scf .scf-body input:checked+label .filter-count{background:transparent!important;color:#d5ecdc!important}'; (document.head || document.documentElement).appendChild(s); })();
 /* SC filtry – po výběru hodnoty (stránka se znovu načte) nechat stejný filtr otevřený, aby šlo vybírat dál */
 (function () {
   document.addEventListener('click', function (e) {
