@@ -611,7 +611,7 @@
     ['Základ', ['Cena', 'Značky', 'Značka', 'Počet semen', 'Na skladě a další']],
     ['Genetika', ['Indica', 'Sativa', 'Ruderalis', 'USA genetika', 'Vítěz Cannabis Cup', 'Vlastnosti']],
     ['Kanabinoidy', ['THC', 'CBD', 'CBG']],
-    ['Odrůda', ['Doba květu (indoor)', 'Doba květu (outdoor)', 'Výnos (indoor)', 'Výnos (outdoor)', 'Výška', 'Náročnost']],
+    ['Odrůda', ['Doba květu (indoor)', 'Doba květu (outdoor)', 'Výnos (indoor)', 'Výnos (outdoor)', 'Výška INDOOR', 'Výška (indoor)', 'Výška OUTDOOR', 'Výška (outdoor)', 'Výška', 'Náročnost']],
     ['Vůně a chuť', ['Terpeny', 'Terpenový profil']]
   ];
   var HIDE = ['10', 'Značka']; // 10 = skrytý parametr pro vyhledávání, Značka = duplicita k Značky // skrytý parametr pro vyhledávání – ve filtrech nezobrazovat
@@ -768,4 +768,34 @@
     window.scrollTo(0, s.getBoundingClientRect().top + window.scrollY - 90);
   };
   window.scfReopen();
+})();
+/* SC filtry – tlačítka Zpět / Vymazat filtr / Vymazat vše */
+(function () {
+  var css = '.scf .scf-foot{gap:8px;flex-wrap:wrap}.scf .scf-btn2{border:1px solid #2a7d46;background:#fff;color:#2a7d46;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px;cursor:pointer}.scf .scf-btn2:hover{background:#f3faf5}.scf .scf-active .scf-clear{border:0;background:none;color:#c62828;font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:6px 4px}.scf .scf-body input:checked+label .filter-count{background:transparent!important;color:#d5ecdc!important}';
+  var st = document.createElement('style'); st.textContent = css; (document.head || document.documentElement).appendChild(st);
+  function base() { var p = location.pathname.split(':')[0]; if (p.slice(-1) !== '/') p += '/'; return location.origin + p; }
+  function go(u) { try { sessionStorage.setItem('scf-prev', location.href); } catch (x) {} location.href = u; }
+  function btn(t, f) { var b = document.createElement('button'); b.type = 'button'; b.className = 'scf-btn2'; b.textContent = t; b.addEventListener('click', f); return b; }
+  function clearSec(s) {
+    var ch = s.querySelectorAll('input[type=checkbox]:checked'); if (!ch.length) return;
+    var u = new URL(location.href), pv = false;
+    ch.forEach(function (i) { if (i.getAttribute('data-filter-code') === 'pv') { u.searchParams.delete('pv' + i.getAttribute('data-filter-id')); pv = true; } });
+    go(pv ? u.toString() : ch[0].getAttribute('data-url'));
+  }
+  function add(root) {
+    if (!root || root.getAttribute('data-scf-btns') === root.querySelectorAll('.scf-sec').length + '') return;
+    root.querySelectorAll('.scf-sec').forEach(function (s) {
+      var foot = s.querySelector('.scf-foot'); if (!foot || foot.querySelector('.scf-btn2')) return;
+      var prev; try { prev = sessionStorage.getItem('scf-prev'); } catch (x) {}
+      if (prev && prev !== location.href && prev.split('#')[0].indexOf(base().split('?')[0]) === 0) foot.insertBefore(btn('← Zpět', function () { try { sessionStorage.removeItem('scf-prev'); } catch (x) {} location.href = prev; }), foot.firstChild);
+      if (s.querySelector('input[type=checkbox]:checked')) foot.insertBefore(btn('Vymazat filtr', function () { clearSec(s); }), foot.lastChild);
+    });
+    var act = root.querySelector('.scf-active');
+    if (act && act.children.length && !act.querySelector('.scf-clear')) { var c = document.createElement('button'); c.type = 'button'; c.className = 'scf-clear'; c.textContent = 'Vymazat vše'; c.addEventListener('click', function () { go(base()); }); act.appendChild(c); }
+    root.setAttribute('data-scf-btns', root.querySelectorAll('.scf-sec').length + '');
+  }
+  // zapamatovat stav před každým výběrem (pro Zpět)
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.scf-body label.filter-label, .scf-chip')) try { sessionStorage.setItem('scf-prev', location.href); } catch (x) {} }, true);
+  var orig = window.scFiltry; if (orig) window.scFiltry = function (r) { orig(r); add(r); };
+  add(document.querySelector('.scf'));
 })();
